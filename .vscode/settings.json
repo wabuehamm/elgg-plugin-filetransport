@@ -1,0 +1,18 @@
+{
+    "deploy.reloaded": {
+        "packages": [
+          {
+            "name": "elgg-plugin-filetransport",
+            "targets": ["dev.filetransport"],
+            "deployOnSave": true
+          }
+        ],
+        "targets": [
+          {
+            "type": "local",
+            "name": "dev.filetransport",
+            "dir": "../dev/mitglieder/export/site/mod/filetransport"
+          }
+        ]
+      }
+}

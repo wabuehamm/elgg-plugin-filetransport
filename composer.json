@@ -1,0 +1,17 @@
+{
+    "name": "wabuehamm/elgg-plugin-filetransport",
+    "description": "This plugin sets the default main transport to the file transport when activated. Make sure, it is the last enabled plugin",
+    "type": "elgg-plugin",
+    "keywords": ["elgg", "plugin", "file", "transport", "development"],
+    "license": "MIT",
+    "support": {
+            "source": "https://github.com/wabuehamm/elgg-plugin-filetransport",
+            "issues": "https://github.com/wabuehamm/elgg-plugin-filetransport/issues"
+    },
+    "require": {
+            "composer/installers": "^1.0.8"
+    },
+    "conflict": {
+            "elgg/elgg": "<3.0"
+    }
+}
