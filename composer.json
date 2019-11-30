@@ -1,5 +1,5 @@
 {
-    "name": "wabuehamm/elgg-plugin-filetransport",
+    "name": "wabuehamm/filetransport",
     "description": "This plugin sets the default main transport to the file transport when activated. Make sure, it is the last enabled plugin",
     "type": "elgg-plugin",
     "keywords": ["elgg", "plugin", "file", "transport", "development"],
