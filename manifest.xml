@@ -3,7 +3,7 @@
         <id>filetransport</id>
         <name>Elgg File Transport Plugin</name>
         <author>Westfaelische Freilichtspiele e.V. Waldbuehne Heessen</author>
-        <version>1.0.0</version>
+        <version type="dist">0.0.0</version>
         <description>This plugin sets the default main transport to the file transport when activated. Make sure, it is the last enabled plugin</description>
         <requires>
                 <type>elgg_release</type>
