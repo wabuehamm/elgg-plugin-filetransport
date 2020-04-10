@@ -1,6 +1,7 @@
 .vscode
 releases
 build
+vendor
 ### Node template
 # Logs
 logs

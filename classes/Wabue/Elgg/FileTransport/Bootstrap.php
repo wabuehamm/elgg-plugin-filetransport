@@ -21,5 +21,8 @@ class Bootstrap extends DefaultPluginBootstrap
                 ]
             )
         ));
+
+        $webService = new WebService();
+        $webService->register();
     }
 }
