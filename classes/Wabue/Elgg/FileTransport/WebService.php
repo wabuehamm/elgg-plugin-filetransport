@@ -2,15 +2,12 @@
 
 namespace Wabue\Elgg\FileTransport;
 
-use Elgg\Http\Exception\AdminGatekeeperException;
+use Elgg\Exceptions\Http\Gatekeeper\AdminGatekeeperException;
 use Mail\MailParser;
 
 class WebService {
 
     public function getNotifications() {
-        if (!elgg_is_admin_logged_in()) {
-            throw new AdminGatekeeperException('This request requires an admin');
-        }
         $path = elgg_get_plugin_setting('path', 'filetransport', elgg_get_data_path() . "/notifications_log/zend");
         $notifications = glob($path . DIRECTORY_SEPARATOR . '*');
         $return = [];
@@ -33,18 +30,12 @@ class WebService {
     }
 
     public function countNotifications() {
-        if (!elgg_is_admin_logged_in()) {
-            throw new AdminGatekeeperException('This request requires an admin');
-        }
         $path = elgg_get_plugin_setting('path', 'filetransport', elgg_get_data_path() . "/notifications_log/zend");
         $notifications = glob($path . DIRECTORY_SEPARATOR . '*');
         return count($notifications);
     }
 
     public function flushNotifications() {
-        if (!elgg_is_admin_logged_in()) {
-            throw new AdminGatekeeperException('This request requires an admin');
-        }
         $path = elgg_get_plugin_setting('path', 'filetransport', elgg_get_data_path() . "/notifications_log/zend");
         $notifications = glob($path . DIRECTORY_SEPARATOR . '*');
         foreach ($notifications as $notification) {
@@ -54,18 +45,36 @@ class WebService {
     }
 
     public function sendNotifications() {
-        if (!elgg_is_admin_logged_in()) {
-            throw new AdminGatekeeperException('This request requires an admin');
-        }
         $stop_time = time() + 45;
         _elgg_services()->notifications->processQueue($stop_time);
         return true;
     }
 
-    public function register() {
-        elgg_ws_expose_function('filetransport.notifications.get', array($this, 'getNotifications'), null, 'Return a list of currently sent notifications', 'GET', false, true);
-        elgg_ws_expose_function('filetransport.notifications.count', array($this, 'countNotifications'), null, 'Return the count of currently sent notifications', 'GET', false, true);
-        elgg_ws_expose_function('filetransport.notifications.flush', array($this, 'flushNotifications'), null, 'Flush all currently sent notifications', 'POST', false, true);
-        elgg_ws_expose_function('filetransport.notifications.send', array($this, 'sendNotifications'), null, 'Send out notifications now', 'POST', false, true);
+    public function register(\Elgg\Event $event) {
+        $results = $event->getValue();
+
+        $results['filetransport.notifications.get']['GET'] = [
+            'callback' => array($this, 'getNotifications'),
+            'description' => 'Return a list of currently sent notifications',
+            'require_api_auth' => true
+        ];
+        $results['filetransport.notifications.count']['GET'] = [
+            'callback' => array($this, 'countNotifications'),
+            'description' => 'Return the count of currently sent notifications',
+            'require_api_auth' => true
+        ];
+        $results['filetransport.notifications.flush']['POST'] = [
+            'callback' => array($this, 'flushNotifications'),
+            'description' => 'Flush all currently sent notifications',
+            'require_api_auth' => true
+        ];
+        $results['filetransport.notifications.send']['POST'] = [
+            'callback' => array($this, 'sendNotifications'),
+            'description' => 'Send out notifications now',
+            'require_api_auth' => true
+        ];
+
+        return $results;
     }
+
 }
