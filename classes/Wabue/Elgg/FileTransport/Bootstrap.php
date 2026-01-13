@@ -3,8 +3,10 @@
 namespace Wabue\Elgg\FileTransport;
 
 use Elgg\DefaultPluginBootstrap;
+use Elgg\PluginBootstrapInterface;
 
-class Bootstrap extends DefaultPluginBootstrap
+
+class Bootstrap extends DefaultPluginBootstrap implements PluginBootstrapInterface
 {
     public function boot()
     {
@@ -14,15 +16,16 @@ class Bootstrap extends DefaultPluginBootstrap
             mkdir($path, 0777, true);
         }
 
-        elgg_set_email_transport(new \Zend\Mail\Transport\File(
-            new \Zend\Mail\Transport\FileOptions(
+        _elgg_services()->set('mailer', new \Laminas\Mail\Transport\File(
+            new \Laminas\Mail\Transport\FileOptions(
                 [
-                    path => $path
+                    "path" => $path
                 ]
             )
         ));
 
         $webService = new WebService();
-        $webService->register();
+        $events = $this->elgg()->events;
+        $events->registerHandler('register', 'api_methods', array($webService, 'register'));
     }
 }
