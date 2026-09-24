@@ -16,13 +16,7 @@ class Bootstrap extends DefaultPluginBootstrap implements PluginBootstrapInterfa
             mkdir($path, 0777, true);
         }
 
-        _elgg_services()->set('mailer', new \Laminas\Mail\Transport\File(
-            new \Laminas\Mail\Transport\FileOptions(
-                [
-                    "path" => $path
-                ]
-            )
-        ));
+        _elgg_services()->set('mailer', new FileMailer($path));
 
         $webService = new WebService();
         $events = $this->elgg()->events;
